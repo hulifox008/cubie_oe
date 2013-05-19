@@ -1,0 +1,6 @@
+bitbake
+openembedded
+build/tmp
+build/download
+build/env.rc
+
