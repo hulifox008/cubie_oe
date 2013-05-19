@@ -1,0 +1,31 @@
+#!/bin/bash
+
+export TOPDIR=$PWD
+
+if [ ! -e $TOPDIR/bitbake ]; then
+    echo "bitbake directory doesn't exist!"
+    exit 1
+fi
+
+if [ ! -d $TOPDIR/openembedded ]; then
+    echo "openembedded directory doesn't exist!"
+    exit 1
+fi
+
+if [ ! -d $TOPDIR/build ]; then
+    echo "build directory doesn't exist!"
+    exit 1
+fi
+
+RC_FILE=$TOPDIR/build/env.rc
+
+rm -f $RC_FILE
+touch  $RC_FILE
+echo "export TOPDIR=$TOPDIR" >> $RC_FILE
+echo "export PATH=$TOPDIR/bitbake/bin:$PATH" >> $RC_FILE 
+echo "export BBPATH=$TOPDIR/openembedded:$TOPDIR/build" >> $RC_FILE
+echo "export BB_ENV_WHITELIST='TOPDIR BBPATH PATH HOME'" >> $RC_FILE
+
+echo 'export PS1="\[\033[01;32m\][\u@BUILD_ENV \W]\[\033[00m\] "' >> $RC_FILE
+/bin/bash --rcfile $RC_FILE
+
